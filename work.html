@@ -145,7 +145,7 @@
   .row:hover h3{color:var(--accent);transform:translateX(8px);}
   .row .status{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border:1px solid var(--line-strong);color:var(--ink-dim);white-space:nowrap;}
   .row .status.live{border-color:var(--accent-dim);color:var(--accent);}
-  .row .go{font-size:18px;color:var(--ink-dim);transition:all .25s;}
+  .row .go{display:flex;align-items:center;justify-content:center;color:var(--ink-dim);transition:all .25s;}
   .row:hover .go{color:var(--accent);transform:translate(4px,-4px);}
   .row-body{max-height:0;transition:max-height .45s cubic-bezier(.2,.65,.25,1);}
   .row:hover .row-body{max-height:150px;}
@@ -318,7 +318,7 @@
         : 'href="#" onclick="alert(\'Demo coming soon - check back shortly!\');return false;"';
       return '<a class="row rv hoverable" '+tag+'>'
         +'<div class="row-head"><span class="rnum">'+order+'</span><h3>'+name+'</h3>'
-        +'<span class="status'+(isLive?' live':'')+'">'+status+'</span><span class="go">↗</span></div>'
+        +'<span class="status'+(isLive?' live':'')+'">'+status+'</span><span class="go"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span></div>'
         +'<div class="row-body"><div class="row-body-inner"><p>'+desc
         +(category?' <span style="color:var(--ink-dim);">- '+category+'</span>':'')+'</p>'
         +'<div class="swatches">'+swatchesFor(r,cols)+'</div>'
