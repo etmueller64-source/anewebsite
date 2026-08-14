@@ -3,7 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact - A&E Design</title>
+<title>Contact A&E Design | Website Design in Aurora / Newmarket, ON</title>
+<meta name="description" content="Get in touch with A&E Design for a custom website quote. Serving Aurora, Newmarket, Richmond Hill, and York Region, Ontario.">
+<link rel="canonical" href="https://aedesigned.com/contact.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="A&E Design">
+<meta property="og:title" content="Contact A&E Design | Website Design in Aurora / Newmarket, ON">
+<meta property="og:description" content="Get in touch with A&E Design for a custom website quote. Serving Aurora, Newmarket, Richmond Hill, and York Region, Ontario.">
+<meta property="og:url" content="https://aedesigned.com/contact.html">
+<meta property="og:image" content="https://aedesigned.com/social-share.jpg">
+<meta property="og:locale" content="en_CA">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact A&E Design | Website Design in Aurora / Newmarket, ON">
+<meta name="twitter:description" content="Get in touch with A&E Design for a custom website quote in York Region, Ontario.">
+<meta name="twitter:image" content="https://aedesigned.com/social-share.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "url": "https://aedesigned.com/contact.html",
+  "name": "Contact A&E Design",
+  "isPartOf": {"@type": "WebSite", "name": "A&E Design", "url": "https://aedesigned.com/"}
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,15 +43,17 @@
     --accent:#5B8CFF; --accent-dim:rgba(91,140,255,0.35);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+  html{scroll-behavior:smooth;}
   body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;animation:pageIn .5s ease;}
   @keyframes pageIn{from{opacity:0;}to{opacity:1;}}
-  
+  @media (pointer:fine){ body{cursor:none;} body a, body button{cursor:none;} }
   h1,h2,h3{font-family:'Inter Tight',sans-serif;font-weight:800;letter-spacing:-0.03em;line-height:1.02;}
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
   .micro{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);}
   .micro b{color:var(--accent);font-weight:500;}
+  #cur{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:300;transform:translate(-50%,-50%);}
+  @media (pointer:coarse){#cur{display:none;}}
   #prog{position:fixed;top:0;left:0;height:2px;background:var(--accent);width:0;z-index:150;}
   #ticker{position:fixed;top:0;left:0;right:0;z-index:110;background:var(--bg);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:8px 40px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);}
   #ticker .seg{display:flex;gap:26px;}
@@ -82,6 +112,8 @@
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important;}
     .rv{opacity:1;transform:none;}
+    body{cursor:auto;}
+    #cur{display:none;}
   }
 
   .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:2px;background:var(--line);border:1px solid var(--line);}
@@ -95,7 +127,6 @@
   .direct-list{list-style:none;}
   .direct-list li{padding:20px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px;}
   .direct-list li:last-child{border-bottom:none;}
-  .direct-list li a{display:flex;flex-direction:column;gap:4px;}
   .direct-list .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);}
   .direct-list .v{font-size:16px;font-weight:600;transition:color .2s;}
   .direct-list a .v:hover{color:var(--accent);}
@@ -118,6 +149,7 @@
 </head>
 <body>
 
+<div id="cur"></div>
 <div id="prog"></div>
 
 <div id="ticker">
@@ -243,6 +275,9 @@
     const h=document.documentElement.scrollHeight-innerHeight;
     prog.style.width=(h>0?(scrollY/h*100):0)+'%';},{passive:true});
   if(finePointer && !reduced){
+    const cur=document.getElementById('cur');
+    addEventListener('mousemove',e=>{
+      cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px) translate(-50%,-50%)';});
     document.querySelectorAll('.hoverable').forEach(el=>{
       el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
       el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
@@ -277,7 +312,7 @@
   });
 
   /* submit the form to a Google Sheet via Apps Script - no backend needed */
-  const SHEET_WEBAPP_URL='https://script.google.com/macros/s/AKfycbw57jntFo-gRRbr3CVlgH3LVmbDV6mI4kYU8kPhTX2WUzykUQSKDEipcJoc2T8NmLej/exec';
+  const SHEET_WEBAPP_URL='https://script.google.com/macros/s/AKfycbw7EXpVlfg_8w6L8X_P0otYvV9k6mfkadW--x5dnvEd2bbQzaSLFJ4HawxNvC2RFyQL/exec';
   const send=document.getElementById('f-send');
   const status=document.getElementById('f-status');
   if(send){

@@ -3,7 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A&E Design - Websites for Local Businesses</title>
+<title>A&E Design | Website Design for Small Businesses in Aurora, Newmarket & York Region, ON</title>
+<meta name="description" content="A&E Design builds fast, modern websites for local businesses in Aurora, Newmarket, Richmond Hill and across York Region, Ontario. Custom design, built to grow with you.">
+<link rel="canonical" href="https://aedesigned.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="A&E Design">
+<meta property="og:title" content="A&E Design | Website Design for Small Businesses in Aurora, Newmarket & York Region, ON">
+<meta property="og:description" content="A&E Design builds fast, modern websites for local businesses in Aurora, Newmarket, Richmond Hill and across York Region, Ontario. Custom design, built to grow with you.">
+<meta property="og:url" content="https://aedesigned.com/">
+<meta property="og:image" content="https://aedesigned.com/social-share.jpg">
+<meta property="og:locale" content="en_CA">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A&E Design | Website Design for Small Businesses in Aurora, Newmarket & York Region, ON">
+<meta name="twitter:description" content="A&E Design builds fast, modern websites for local businesses in Aurora, Newmarket, Richmond Hill and across York Region, Ontario.">
+<meta name="twitter:image" content="https://aedesigned.com/social-share.jpg">
+
+<!-- LocalBusiness structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "A&E Design",
+  "description": "Website design and development studio serving local small businesses in Aurora, Newmarket, Richmond Hill, and York Region, Ontario.",
+  "url": "https://aedesigned.com/",
+  "telephone": "+1-647-202-9626",
+  "email": "etmueller64@gmail.com",
+  "areaServed": [
+    {"@type": "City", "name": "Aurora"},
+    {"@type": "City", "name": "Newmarket"},
+    {"@type": "City", "name": "Richmond Hill"},
+    {"@type": "City", "name": "King"},
+    {"@type": "City", "name": "Bradford"},
+    {"@type": "AdministrativeArea", "name": "York Region"}
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Aurora",
+    "addressRegion": "ON",
+    "addressCountry": "CA"
+  },
+  "priceRange": "$$"
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,9 +61,9 @@
     --accent:#5B8CFF; --accent-dim:rgba(91,140,255,0.35);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+  html{scroll-behavior:smooth;}
   body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
-  
+  @media (pointer:fine){ body{cursor:none;} body a, body button{cursor:none;} }
   h1,h2,h3{font-family:'Inter Tight',sans-serif;font-weight:800;letter-spacing:-0.03em;line-height:1.02;}
   a{color:inherit;text-decoration:none;}
   .wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
@@ -25,6 +71,8 @@
   .micro b{color:var(--accent);font-weight:500;}
 
   /* ---------- cursor: small dot, subtle ring ---------- */
+  #cur{position:fixed;top:0;left:0;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:300;transform:translate(-50%,-50%);}
+  @media (pointer:coarse){#cur{display:none;}}
 
   /* ---------- progress line ---------- */
   #prog{position:fixed;top:0;left:0;height:2px;background:var(--accent);width:0;z-index:150;}
@@ -215,11 +263,14 @@
     *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important;}
     .rv{opacity:1;transform:none;}
     #typed::after{content:"";}
+    body{cursor:auto;}
+    #cur{display:none;}
   }
 </style>
 </head>
 <body>
 
+<div id="cur"></div>
 <div id="prog"></div>
 
 <div id="loader"><div class="word">
@@ -503,6 +554,9 @@
 
   /* cursor: small dot + subtle ring, magnetic buttons (A, toned down) */
   if(finePointer && !reduced){
+    const cur=document.getElementById('cur');
+    addEventListener('mousemove',e=>{
+      cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px) translate(-50%,-50%)';});
     document.querySelectorAll('.hoverable').forEach(el=>{
       el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
       el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
