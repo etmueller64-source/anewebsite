@@ -95,7 +95,7 @@
   .rv{opacity:0;transform:translateY(36px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.65,.25,1);}
   .rv.in{opacity:1;transform:none;}
   .rv.d1{transition-delay:.1s;}.rv.d2{transition-delay:.2s;}.rv.d3{transition-delay:.3s;}
-  .btn{display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;padding:14px 28px;border:1px solid var(--ink);transition:background .25s,color .25s,border-color .25s;}
+  .btn{display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;padding:14px 28px;border:1px solid var(--ink);transition:background .25s,color .25s,border-color .25s;font-family:inherit;cursor:pointer;background:none;appearance:none;-webkit-appearance:none;}
   .btn-fill{background:var(--ink);color:var(--bg);}
   .btn-fill:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
   .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
@@ -206,29 +206,40 @@
     <div class="contact-grid rv">
       <div class="c-cell">
         <div class="sec-label" style="margin-bottom:34px;"><span class="micro">Start a project</span><div class="rule"></div></div>
-        <div class="form-row">
-          <label>Your name</label>
-          <input type="text" id="f-name" placeholder="Jane Smith">
-        </div>
-        <div class="form-row">
-          <label>Business name</label>
-          <input type="text" id="f-biz" placeholder="Jane's Grooming Co.">
-        </div>
-        <div class="form-row">
-          <label>What do you need?</label>
-          <select id="f-need">
-            <option>A brand-new website</option>
-            <option>A redesign of my current site</option>
-            <option>Updates / maintenance help</option>
-            <option>Not sure yet - let's talk</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label>Tell us about it</label>
-          <textarea id="f-msg" placeholder="What does your business do, and what should the site do for you?"></textarea>
-        </div>
-        <a class="btn btn-fill hoverable magnetic" href="#" id="f-send">Send it over →</a>
-        <div class="form-note" id="f-status" style="min-height:16px;"></div>
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+            <label>Don't fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <div class="form-row">
+            <label>Your name</label>
+            <input type="text" id="f-name" name="name" placeholder="Jane Smith" required>
+          </div>
+          <div class="form-row">
+            <label>Your email <span style="color:var(--accent);">*</span></label>
+            <input type="email" id="f-email" name="email" placeholder="jane@janesgrooming.com" required>
+          </div>
+          <div class="form-row">
+            <label>Business name</label>
+            <input type="text" id="f-biz" name="business" placeholder="Jane's Grooming Co.">
+          </div>
+          <div class="form-row">
+            <label>What do you need?</label>
+            <select id="f-need" name="need">
+              <option>A brand-new website</option>
+              <option>A redesign of my current site</option>
+              <option>Updates / maintenance help</option>
+              <option>Not sure yet - let's talk</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Tell us about it</label>
+            <textarea id="f-msg" name="message" placeholder="What does your business do, and what should the site do for you?" required></textarea>
+          </div>
+          <div class="form-row" data-netlify-recaptcha="true"></div>
+          <button type="submit" class="btn btn-fill hoverable magnetic" id="f-send">Send it over →</button>
+          <div class="form-note" id="f-status" style="min-height:16px;"></div>
+        </form>
       </div>
       <div class="c-cell">
         <div class="sec-label" style="margin-bottom:34px;"><span class="micro">Reach us directly</span><div class="rule"></div></div>
@@ -340,23 +351,24 @@
     });
   });
 
-  /* submit the form to a Google Sheet via Apps Script - no backend needed */
-  const SHEET_WEBAPP_URL='https://script.google.com/macros/s/AKfycbw7EXpVlfg_8w6L8X_P0otYvV9k6mfkadW--x5dnvEd2bbQzaSLFJ4HawxNvC2RFyQL/exec';
+  /* submit the form to Netlify Forms - no external backend, no third-party account needed */
+  const form=document.getElementById('contact-form');
   const send=document.getElementById('f-send');
   const status=document.getElementById('f-status');
-  if(send){
-    send.addEventListener('click',e=>{
+  if(form){
+    form.addEventListener('submit',e=>{
       e.preventDefault();
-      const v=id=>document.getElementById(id).value.trim();
-      const name=v('f-name'),biz=v('f-biz'),need=document.getElementById('f-need').value,msg=v('f-msg');
+      const name=document.getElementById('f-name').value.trim();
+      const email=document.getElementById('f-email');
+      const msg=document.getElementById('f-msg').value.trim();
 
-      if(!name || !msg){
-        status.textContent='Please fill in your name and a quick message.';
+      if(!name || !email.value.trim() || !msg){
+        status.textContent='Please fill in your name, email, and a quick message.';
         status.style.color='#e88';
         return;
       }
-      if(SHEET_WEBAPP_URL.includes('PASTE_YOUR')){
-        status.textContent='Form isn\'t connected yet - add your Apps Script URL in the code.';
+      if(!email.checkValidity()){
+        status.textContent='That email address doesn\'t look right - please double check it.';
         status.style.color='#e88';
         return;
       }
@@ -366,16 +378,19 @@
       status.style.color='var(--ink-dim)';
       status.textContent='Sending...';
 
-      const payload=new URLSearchParams({name,business:biz,need,message:msg,page:location.href});
+      const data=new FormData(form);
 
-      fetch(SHEET_WEBAPP_URL,{method:'POST',mode:'no-cors',body:payload})
+      fetch('/',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams(data).toString()
+      })
         .then(()=>{
           status.textContent='Thanks - we\'ll be in touch within 24 hours.';
           status.style.color='var(--accent)';
           send.style.pointerEvents='';
           send.style.opacity='';
-          ['f-name','f-biz','f-msg'].forEach(id=>document.getElementById(id).value='');
-          document.getElementById('f-need').selectedIndex=0;
+          form.reset();
         })
         .catch(()=>{
           status.textContent='Something went wrong - email us directly at info@aedesigned.com.';
@@ -388,5 +403,6 @@
 
 })();
 </script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
