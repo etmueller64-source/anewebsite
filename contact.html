@@ -208,6 +208,7 @@
         <div class="sec-label" style="margin-bottom:34px;"><span class="micro">Start a project</span><div class="rule"></div></div>
         <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" name="subject" id="f-subject" value="New inquiry">
           <p style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
             <label>Don't fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
           </p>
@@ -372,6 +373,9 @@
         status.style.color='#e88';
         return;
       }
+
+      const need=document.getElementById('f-need').value;
+      document.getElementById('f-subject').value=name+' - '+need;
 
       send.style.pointerEvents='none';
       send.style.opacity='.6';
